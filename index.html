@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <link href="css/papierfabrik.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.css"/>
+
+    <title>hausneun</title>
+</head>
+
+<body>
+    <header>
+        <div id="wrapper">
+            <nav id="my-navbar">
+                <a class="my-navbar-brand" href="index.html"><img id="logo" src="svg/hausneun_logo.svg" alt="hausneun"></a>
+                <div id="info-button" class="shadow">i</div>
+                <img id="info-close-button" src="svg/close.svg" alt="X">
+                <img id="panorama-close-button" class="shadow" src="svg/close.svg" alt="X">
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div id="panorama-viewer"></div>
+        <div id="info-panel">
+            <div id="info-content">
+                <div id="slide-elements">
+                    <h2>Informationen</h2>
+                    <div id="slide-container">
+                        <div class="slide">
+                            <div>Diese Seite dient zur Navigation durch das Haus 9 der Hochschule Harz.
+                                <h3>Steuerung</h3>
+                                <div id="tut-desktop">Wenn die linke Maustaste gedrückt bleibt, kann das Modell verschoben werden. Mit der
+                                rechten Maustaste kann das Modell gedreht werden. Durch ein Scrollen oder das Gedrückthalten
+                                der mittleren Maustaste kann hinein- und hinausgezoomt werden.</div>
+                                <div id="tut-mobile">Mit einem Finger kann das Modell verschoben und mit zwei Fingern gedreht werden. Mit
+                                einem auseinander- oder zusammenziehen der Finger kann hinein- und hinausgezoomt werden.</div>
+                                <img src="png/mobile_steuerung.png" alt="Übersicht über die mobile Steuerung"/>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <h3>Ebenenwechsel</h3>
+                            <div>Ein Wechsel zwischen den Ebenen ist durch die Pfeile möglich. Die Ebenen gehen von 1-4. Das
+                                Erdgeschoss ist somit Ebene 1.
+                            </div>
+                            <img src="png/tut_hoch_runter_buttons.png" alt="Screenshot der Pfeile für den Ebenenwechsel" class="bigger-button-pics"/>
+                            <h3>Neu zentrieren und 2D-/3D-Ansicht</h3>
+                            <div>Durch einen Klick auf das Zentrieren-Symbol kann das Modell neu zentriert werden oder von einer
+                                3D- zu einer 2D-Ansicht gewechselt werden.
+                            </div>
+                            <img src="png/tut_zentrieren_button.png" alt="Screenshot des Buttons für das Zentrieren" class="bigger-button-pics"/>
+
+                        </div>
+                        <div class="slide">
+                            <h3>Suche</h3>
+                            <div>Die Suche kann durch einen Klick auf die Lupe gestartet werden.</div>
+                            <img src="png/tut_suchen_button.png" alt="Screenshot des Buttons für die Suche" class="bigger-button-pics"/>
+                            <div>Hier kann ein Raum eingegeben und mit Betätigen des Enter-Knopfes gesucht werden. Außerdem
+                                kann durch das Eingeben von zwei Räumen und dem Betätigen des Enter-Knopfes eine
+                                Routenplanung gestartet werden.
+                            </div>
+                            <img src="png/tut_suchmaske.png" alt="Screenshot der Suchmaske" id="search-mask-pic"/>
+                        </div>
+                        <div class="slide">
+                            <h3>Infotexte und 360°-Ansicht</h3>
+                            <div>Mit dem Klick auf einen Raum fährt sich unten ein kleiner Infotext aus. Das Wählen des Raumes
+                                kann durch einen Klick außerhalb des Raumes wieder rückgängig gemacht werden.
+                            </div>
+                            <div>Bei einigen Räumen kann eine 360°-Ansicht angewählt werden. Dies geht über das 360°-Symbol
+                                im Info-Bereich des Raumes.
+                            </div>
+                            <img src="png/tut_360_grad_button.png" alt="Screenshot des Buttons für die 360°-Ansicht" id="threesixty-button-pic"/>
+                        </div>
+                     </div>
+                </div>
+                <div>
+                    <div id="dot-container"></div>
+                    <a id="rechtliches" href="impressum.html" target="_blank">Impressum & Datenschutz</a>
+                </div>
+            </div>
+        </div>
+        <div id="main-container">
+            <div id="controls-container">
+                <div id="grey-circle"></div>
+                <div id="view-control" class="shadow">
+                    <img id="view-control-button" src="svg/adjust.svg" alt="Ansicht">
+                    <div id="zentrieren-button">Zentrieren</div>
+                    <div id="dimensions-button">2D</div>
+                </div>
+                <div id="floor-control" class="shadow">
+                    <img id="button-down" src="svg/keyboard_arrow_down.svg">
+                    <div id="floor-number">4</div>
+                    <img id="button-up" src="svg/keyboard_arrow_up.svg">
+                </div>
+                <div id="search-container">
+                    <form id="navigation-form">
+                        <input class="shadow" type="text" class="form-control" id="start-room" placeholder="Start">
+                        <input class="shadow" type="text" class="form-control" id="destination-room" placeholder="Ziel">
+                    </form>
+                    <div class="flex-horizontal">
+                        <img class="shadow" id="toggle-search-button" src="svg/search.svg" alt="Suche">
+                        <img class="shadow" id="enter-button" src="svg/arrow_right_alt.svg" alt="Enter">
+                    </div>
+                </div>
+            </div>
+            <div id="description-container">
+                <p1 id="room-name">Raumname</p1>
+                <p id="room-description">Raumbeschreibung</p>
+                <div id="threesixty-flex">
+                    <img id="threesixty-button" src="svg/360.svg" alt="360°-Ansicht"></img>
+                </div>
+            </div>
+        </div>
+        <canvas id="render-canvas"></canvas>
+    </main>
+
+    <script type="text/javascript" src="js/thirdparty/three.min.js"></script>
+    <script type="text/javascript" src="js/thirdparty/photo-sphere-viewer.min.js"></script>
+    <script type="module" src="js/papierfabrik.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+/* RESET CSS START */
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+    user-select: none;
+}
+
+/* Remove default padding */
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* RESET CSS END */
+
+@font-face {
+    font-family: 'Helvetica-Bold';
+    src: url("../fonts/Helvetica_Bold.ttf");
+}
+
+@font-face {
+    font-family: 'Helvetica-Medium';
+    src: url("../fonts/Helvetica_Medium.ttf");
+}
+
+@font-face {
+    font-family: 'Helvetica-Roman';
+    src: url("../fonts/Helvetica_Roman.ttf");
+}
+
+html {
+    background-color: #8CC3BD;
+    font-family: Helvetica-Roman;
+    color: white;
+}
+
+a, a:hover {
+    color: white;
+    text-decoration: 0;
+}
+
+.my-navbar-brand-impressum {
+    font-size: 1.5em;
+}
+
+.my-navbar-brand-impressum img {
+    width: 65px;
+    filter: invert();
+}
+
+#logo-container a, #logo-container a:hover {
+    font-size: 1.5em;
+}
+
+h1, h2, h3, h4, b, p {
+    font-weight: normal;
+}
+
+p, h4 {
+    margin: 7px 0;
+}
+
+h1, h2, h3{
+    margin-bottom: 7px;
+}
+
+h1 {
+    margin-top: 20px;
+}
+
+h2 {
+    margin-top: 12px;
+}
+
+h3 {
+    margin-top: 9px;
+}
+
+p + h1 {
+    margin-top: 25px;
+}
+
+h1 + h2 {
+    margin-top: 9px;
+}
+
+.wrapper {
+    background-color: rgb(25, 97, 115);
+    width: 80%;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 20px 12vw;
+}
+
+@media(max-width: 1000px) {
+    .wrapper {
+        width: 100%;
+        padding: 20px 5vw;
+    }
+}
