@@ -383,7 +383,7 @@ class Papierfabrik {
             this.deleteNavigationLine();
         }
 
-        const path = this.navigation.findPath(start.position, destination.position);
+        let path = this.navigation.findPath(start.position, destination.position);
 
         if (!path) {
             console.error("Failed to find path");
@@ -392,6 +392,13 @@ class Papierfabrik {
         }
 
         this.navigationLines = [];
+
+        if (path[0].y > path[path.length - 1].y) {
+            this.navigationLines.isInverted = true;
+            path = path.reverse();
+        } else {
+            this.navigationLines.isInverted = false;
+        }
 
         const belongsTo = (v) => {
             const y = v.y;
@@ -535,7 +542,7 @@ class Papierfabrik {
             for (const line of this.navigationLines) {
                 for (let i = 0; i < line.pulseBalls.length; i++) {
                     line.pulseBalls[i].position.copy(
-                        line.curve.getPoint(1 - (this.pulseBallPostion + i) / line.pulseBalls.length % 1));
+                        line.curve.getPoint(1 - ((this?.navigationLines?.isInverted ? 1 - this.pulseBallPostion : this.pulseBallPostion) + i) / line.pulseBalls.length % 1));
                 }
             }
         }

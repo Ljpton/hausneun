@@ -1,5 +1,6 @@
 import { Vector2 } from "./thirdparty/three.module.js";
 
+// Get all the UI elements by ID
 const navigationForm = document.getElementById("navigation-form");
 const mainContainer = document.getElementById("main-container");
 const controlsContainer = document.getElementById("controls-container");
@@ -43,6 +44,9 @@ const logo = document.getElementById("logo");
 
 const panoramaView = document.getElementById("panorama-viewer");
 const panoramaCloseButton = document.getElementById("panorama-close-button");
+
+const deleteStartInput = document.getElementById("delete-start-input");
+const deleteDestinationInput = document.getElementById("delete-destination-input");
 
 /**
  * If the distance between a mousedown and mouseup on the canvas is smaller than this value,
@@ -91,6 +95,14 @@ class UIElements {
                 event.preventDefault();
                 this.enterSearchform();
             }
+        }
+
+        deleteStartInput.onclick = (event) => {
+            startRoom.value = "";
+        }
+
+        deleteDestinationInput.onclick = (event) => {
+            destinationRoom.value = "";
         }
 
         enterButton.onclick = (event) => {
