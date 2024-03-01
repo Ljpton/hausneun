@@ -356,11 +356,11 @@ class UIElements {
 
             if (this.navigationFormVisible) {
                 if (window.innerWidth > 500) {
-                    descriptionContainer.style.transform = "translateY(-15px)"; //-30
-                    controlsContainer.style.transform = "translateY(-32.5px)"; //-47.5
+                    descriptionContainer.style.transform = "translateY(-15px)";
+                    controlsContainer.style.transform = "translateY(-32.5px)";
                 } else {
-                    descriptionContainer.style.transform = "translateY(-6px)"; //-18
-                    controlsContainer.style.transform = "translateY(-24px)"; //-36
+                    descriptionContainer.style.transform = "translateY(-6px)";
+                    controlsContainer.style.transform = "translateY(-24px)";
                 }
             }
             this.describedRoomHasExtraView = true;
