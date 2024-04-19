@@ -1,15 +1,18 @@
 const body = document.body;
 let scrollPosition = 0;
 
-export default {
-  enable() {
+export default
+{
+  enable()
+  {
     scrollPosition = window.pageYOffset;
     body.style.overflow = 'hidden';
     body.style.position = 'fixed';
     body.style.top = "-"+scrollPosition+"px";
     body.style.width = '100%';
   },
-  disable() {
+  disable()
+  {
     body.style.removeProperty('overflow');
     body.style.removeProperty('position');
     body.style.removeProperty('top');

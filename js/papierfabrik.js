@@ -6,8 +6,10 @@ import { OrbitControls } from './thirdparty/OrbitControls.js'
 import { UIElements } from './uielements.js'
 import { Navigation } from './navigation.js'
 
-class Papierfabrik {
-    init() {
+class Papierfabrik
+{
+    init()
+    {
         this.checkPlatform();
 
         this.canvas = document.getElementById('render-canvas');
@@ -33,7 +35,8 @@ class Papierfabrik {
         this.ui = new UIElements(this);
         this.ui.setupCallbacks();
 
-        document.getElementById("threesixty-button").onclick = (event) => {
+        document.getElementById("threesixty-button").onclick = (event) =>
+        {
             this.ui.showPanoramaView();
             this.loadPanoramaPicture();
         }
@@ -41,10 +44,14 @@ class Papierfabrik {
         this.isNavigating = false;
     }
 
-    checkPlatform() {
-        if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)|(tablet|ipad|playbook|silk)|(android(?!.*mobi))/.test(navigator.userAgent)) {
+    checkPlatform()
+    {
+        if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)|(tablet|ipad|playbook|silk)|(android(?!.*mobi))/.test(navigator.userAgent))
+        {
             this.isMobile = true;
-        } else {
+        }
+        else
+        {
             this.isMobile = false;
         }
 
@@ -53,7 +60,8 @@ class Papierfabrik {
             !window.MSStream;
     }
 
-    initScene() {
+    initScene()
+    {
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color('#8CC3BD');
 
@@ -65,29 +73,35 @@ class Papierfabrik {
         this.scene.add(this.sunLight);
     }
 
-    initPerspectiveCamera() {
+    initPerspectiveCamera()
+    {
         this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 256);
         this.camera.position.set(-100, 0, 64);
 
         this.initOrbitControls(Math.PI / 4, new THREE.Vector3(-10, 0, 0));
     }
 
-    initOrthogonalCamera() {
+    initOrthogonalCamera()
+    {
         const scaledWidth = window.innerWidth / 16;
         const scaledHeight = window.innerHeight / 16;
 
         this.camera = new THREE.OrthographicCamera(-scaledWidth, scaledWidth, scaledHeight, -scaledHeight, 1, 256);
 
-        if (this.isMobile) {
+        if (this.isMobile)
+        {
             this.camera.position.set(-64, 0, 0);
-        } else {
+        }
+        else
+        {
             this.camera.position.set(0, 64, 0);
         }
 
         this.initOrbitControls(0, new THREE.Vector3(0, 0, 0));
     }
 
-    initOrbitControls(polarAngle, target) {
+    initOrbitControls(polarAngle, target)
+    {
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         this.controls.screenSpacePanning = false;
         this.controls.target = target;
@@ -95,18 +109,21 @@ class Papierfabrik {
         this.controls.maxZoom = 50;
         this.controls.minPolarAngle = polarAngle;
         this.controls.maxPolarAngle = polarAngle;
-        this.controls.mouseButtons = {
+        this.controls.mouseButtons =
+        {
             LEFT: THREE.MOUSE.PAN,
             MIDDLE: THREE.MOUSE.DOLLY,
             RIGHT: THREE.MOUSE.ROTATE
         };
-        this.controls.touches = {
+        this.controls.touches =
+        {
             ONE: THREE.TOUCH.PAN,
             TWO: THREE.TOUCH.DOLLY_ROTATE,
         };
     }
 
-    initMaterials() {
+    initMaterials()
+    {
         this.selectedMaterial = new THREE.MeshStandardMaterial(
             { color: new THREE.Color("red") });
 
@@ -117,19 +134,27 @@ class Papierfabrik {
             { color: new THREE.Color("grey") });
     }
 
-    resetCamera() {
-        if (this.camera.type === 'PerspectiveCamera') {
+    resetCamera()
+    {
+        if (this.camera.type === 'PerspectiveCamera')
+        {
             this.initPerspectiveCamera();
-        } else {
+        }
+        else
+        {
             this.initOrthogonalCamera();
         }
     }
 
-    resizeCamera() {
-        if (this.camera.type === 'PerspectiveCamera') {
+    resizeCamera()
+    {
+        if (this.camera.type === 'PerspectiveCamera')
+        {
             this.camera.aspect = window.innerWidth / window.innerHeight;
             this.camera.updateProjectionMatrix();
-        } else {
+        }
+        else
+        {
             const scaledWidth = window.innerWidth / 16;
             const scaledHeight = window.innerHeight / 16;
 
@@ -141,10 +166,12 @@ class Papierfabrik {
         }
     }
 
-    loadingFinished() {
+    loadingFinished()
+    {
         this.updateCurrentLevel();
 
-        for (let i = 0; i < this.level.length; i++) {
+        for (let i = 0; i < this.level.length; i++)
+        {
             this.level[i].position.y = i * i * 100;
         }
 
@@ -154,13 +181,15 @@ class Papierfabrik {
 
         this.tokenizeNodeNames();
 
-        this.renderer.setAnimationLoop(() => {
+        this.renderer.setAnimationLoop(() =>
+        {
             this.update();
         });
 
     }
 
-    loadModel() {
+    loadModel()
+    {
         const loader = new GLTFLoader();
 
         this.billboardObjects = [];
@@ -169,22 +198,26 @@ class Papierfabrik {
         this.level = [];
 
         loader.load('glb/papierfabrik.glb',
-            (gltf) => {
+            (gltf) => 
+            {
                 gltf.scene.traverse((o) => {
                     const splitName = o.name.split('_');
                     if ((splitName[3] === 'Icon' && splitName[1] === 'WC')
-                        || (splitName[2] === 'Icon' && splitName[1] === 'Aufzug')) {
+                        || (splitName[2] === 'Icon' && splitName[1] === 'Aufzug'))
+                    {
                         o.level = parseInt(splitName[0][1]);
                         this.billboardObjects.push(o);
                     }
 
-                    if (splitName[1] === 'Treppe' && splitName[2] === 'Icon') {
+                    if (splitName[1] === 'Treppe' && splitName[2] === 'Icon')
+                    {
                         this.staircaseObjects.push(o);
                     }
                 });
 
                 this.level = gltf.scene.children;
-                this.level.sort((a, b) => {
+                this.level.sort((a, b) =>
+                {
                     return a.name.localeCompare(b.name);
                 });
 
@@ -199,27 +232,33 @@ class Papierfabrik {
         this.navigationLineGeometry = new THREE.BoxGeometry(0.5, 0.5);
     }
 
-    loadNavpath() {
+    loadNavpath()
+    {
         const loader = new OBJLoader();
 
         loader.load('obj/navpath.obj',
-            (obj) => {
+            (obj) =>
+            {
                 this.navigation = new Navigation(obj.children[0].geometry);
 
                 this.leftToLoad--;
                 if (this.leftToLoad === 0)
+                {
                     this.loadingFinished();
+                }
             });
     }
 
-    loadRoomlist() {
+    loadRoomlist()
+    {
         const loader = new THREE.FileLoader();
 
         this.rooms = {};
 
         loader.load(
             'csv/roomlist.csv',
-            (data) => {
+            (data) =>
+            {
                 const rooms = data.split('\n');
 
                 for (const room of rooms) {
@@ -227,26 +266,35 @@ class Papierfabrik {
                     const id = roomData[0];
 
                     this.rooms[id] = roomData;
-                    if (this.rooms[id][0].charAt(0) == '9') {
+                    if (this.rooms[id][0].charAt(0) == '9')
+                    {
                         this.rooms[id][0] = this.rooms[id][0].substring(0, 1) + "." + this.rooms[id][0].substring(1, this.rooms[id][0].length);
                     }
                 }
 
                 this.leftToLoad--;
                 if (this.leftToLoad === 0)
+                {
                     this.loadingFinished();
+                }
             },
         );
     }
 
-    tokenizeNodeNames() {
-        this.scene.traverse((node) => {
-            if (node.name[0] != '9') return;
+    tokenizeNodeNames()
+    {
+        this.scene.traverse((node) =>
+        {
+            if (node.name[0] != '9')
+            {
+                return;
+            }
 
             const id = node.name.substring(0, 4);
 
             const csvRoom = this.rooms[id];
-            if (csvRoom) {
+            if (csvRoom)
+            {
                 node.name += ' ' + csvRoom[1];
             }
 
@@ -257,14 +305,17 @@ class Papierfabrik {
         });
     }
 
-    resize() {
+    resize()
+    {
         this.resizeCamera();
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-    removeAllHighlights() {
-        for (const mesh of this.lastSelectedMeshes) {
+    removeAllHighlights()
+    {
+        for (const mesh of this.lastSelectedMeshes)
+        {
             mesh.material = mesh.previousMaterial;
             mesh.previousMaterial = null;
         }
@@ -274,12 +325,16 @@ class Papierfabrik {
         this.ui.cancelDescribeSelectedRoom();
     }
 
-    highlight(node) {
+    highlight(node)
+    {
         this.removeAllHighlights();
 
-        for (const mesh of node.children) {
+        for (const mesh of node.children)
+        {
             if (mesh.material && mesh.material.name !== 'Base_Material')
+            {
                 continue;
+            }
 
             mesh.previousMaterial = mesh.material;
             mesh.material = this.selectedMaterial;
@@ -289,16 +344,19 @@ class Papierfabrik {
 
         const room = this.rooms[node.name.substring(0, 4)];
 
-        if (room) {
-            this.ui.describeSelectedRoom(room[0] + " " + room[1], room[3], room[5] === (this.iOS ? "Ja" : "Ja\r"));
+        if (room)
+        {
+            this.ui.describeSelectedRoom(room[0] + " " + room[1], room[3], room[5].length > 1);
 
-            if (room[5] === (this.iOS ? "Ja" : "Ja\r")) {
+            if (room[5].length > 1) // If room has no panorama picture the field should be empty
+            {
                 this.setPanoramaPicture(room[0]);
             }
         }
     }
 
-    setPanoramaPicture(roomID) {
+    setPanoramaPicture(roomID)
+    {
         this.panoramaViewer = new PhotoSphereViewer({
             panorama: "./png/360/" + roomID.replaceAll('.', '') + "_360.jpg",
             container: document.getElementById("panorama-viewer"),
@@ -307,11 +365,13 @@ class Papierfabrik {
         });
     }
 
-    loadPanoramaPicture() {
+    loadPanoramaPicture()
+    {
         this.panoramaViewer.load();
     }
 
-    search(searchValue) {
+    search(searchValue)
+    {
         if (searchValue.length < 1) return null;
 
         const matchingNodes = [];
@@ -320,31 +380,41 @@ class Papierfabrik {
             .replace(/([.])/g, '')
             .toLowerCase();
 
-        this.scene.traverse((node) => {
-            if (node.name[0] != '9') return;
+        this.scene.traverse((node) =>
+        {
+            if (node.name[0] != '9')
+            {
+                return;
+            }
 
-            if (node.name.includes(lowercaseName)) {
+            if (node.name.includes(lowercaseName))
+            {
                 matchingNodes.push(node);
             }
         });
 
         let resultNode = null;
-        if (matchingNodes.length > 1) {
-            for (const node of matchingNodes) {
-                if (node.name.includes(' ' + lowercaseName + ' ')) {
+        if (matchingNodes.length > 1)
+        {
+            for (const node of matchingNodes)
+            {
+                if (node.name.includes(' ' + lowercaseName + ' '))
+                {
                     resultNode = node;
-
                     break;
                 }
             }
-        } else if (matchingNodes.length == 1) {
+        }
+        else if (matchingNodes.length == 1)
+        {
             resultNode = matchingNodes[0];
         }
 
         return resultNode;
     }
 
-    pick(event) {
+    pick(event)
+    {
         if (this.navigationLines) return;
 
         const mouse = new THREE.Vector2();
@@ -355,19 +425,25 @@ class Papierfabrik {
 
         const intersects = this.raycaster.intersectObjects(this.scene.children);
 
-        if (intersects.length != 0) {
-            if (intersects[0].object.cannotSelect
-                || intersects[0].object.parent.name[0] !== '9')
+        if (intersects.length != 0)
+        {
+            if (intersects[0].object.cannotSelect || intersects[0].object.parent.name[0] !== '9')
+            {
                 return;
+            }
 
             this.highlight(intersects[0].object.parent);
-        } else {
+        }
+        else
+        {
             this.removeAllHighlights();
         }
     }
 
-    deleteNavigationLine() {
-        for (const line of this.navigationLines) {
+    deleteNavigationLine()
+    {
+        for (const line of this.navigationLines)
+        {
             this.level[line.belongs].remove(line);
         }
 
@@ -375,48 +451,62 @@ class Papierfabrik {
         this.isNavigating = false;
     }
 
-    startNavigation(start, destination) {
+    startNavigation(start, destination)
+    {
         this.removeAllHighlights();
         this.isNavigating = true;
 
-        if (this.navigationLines) {
+        if (this.navigationLines)
+        {
             this.deleteNavigationLine();
         }
 
         let path = this.navigation.findPath(start.position, destination.position);
 
-        if (!path) {
+        if (!path)
+        {
             console.error("Failed to find path");
-
             return;
         }
 
         this.navigationLines = [];
 
-        if (path[0].y > path[path.length - 1].y) {
+        if (path[0].y > path[path.length - 1].y)
+        {
             this.navigationLines.isInverted = true;
             path = path.reverse();
-        } else {
+        }
+        else
+        {
             this.navigationLines.isInverted = false;
         }
 
-        const belongsTo = (v) => {
+        const belongsTo = (v) =>
+        {
             const y = v.y;
 
-            if (y < -2.5) {
+            if (y < -2.5)
+            {
                 return 0;
-            } else if (y < 1) {
+            }
+            else if (y < 1)
+            {
                 return 1;
-            } else if (y < 4.6) {
+            }
+            else if (y < 4.6)
+            {
                 return 2;
-            } else {
+            }
+            else
+            {
                 return 3;
             }
         };
 
         const lineToLevel = new Array(4);
 
-        for (let i = 0; i < path.length - 1; i++) {
+        for (let i = 0; i < path.length - 1; i++)
+        {
             const levelSegment = new THREE.CurvePath();
             levelSegment.pathLength = 0;
 
@@ -424,7 +514,8 @@ class Papierfabrik {
 
             const levelNavLine = new THREE.Group();
 
-            for (; i < path.length - 1; i++) {
+            for (; i < path.length - 1; i++)
+            {
                 const fromTo = path[i].clone().sub(path[i + 1]);
 
                 const curvePart = new THREE.LineCurve3(path[i], path[i + 1]);
@@ -441,7 +532,8 @@ class Papierfabrik {
 
                 const nextBelong = belongsTo(path[i + 1]);
 
-                if (lastSegmentToLevel != nextBelong) {
+                if (lastSegmentToLevel != nextBelong)
+                {
                     break;
                 }
 
@@ -451,7 +543,8 @@ class Papierfabrik {
             levelNavLine.curve = levelSegment;
             levelNavLine.pulseBalls = [];
 
-            for (let i = 0; i < Math.floor(levelSegment.pathLength / 2); i++) {
+            for (let i = 0; i < Math.floor(levelSegment.pathLength / 2); i++)
+            {
                 const ball = new THREE.Mesh(this.navigationBallGeometry, this.navigationLineMaterial);
                 levelNavLine.pulseBalls.push(ball);
                 levelNavLine.add(ball);
@@ -479,40 +572,57 @@ class Papierfabrik {
         this.ui.describeNavigation(this.rooms[start.name.substring(0, 4)][1], this.rooms[destination.name.substring(0, 4)][1]);
     }
 
-    updateCurrentLevel() {
-        if (!this.isNavigating) {
+    updateCurrentLevel()
+    {
+        if (!this.isNavigating)
+        {
             this.removeAllHighlights();
         }
 
-        for (const bo of this.billboardObjects) {
-            if (this.camera.type !== 'PerspectiveCamera') {
+        for (const bo of this.billboardObjects)
+        {
+            if (this.camera.type !== 'PerspectiveCamera')
+            {
                 bo.rotation.set(0, 0, 0);
             }
 
             if (['G3_WC_Herren_Icon_02', 'G3_WC_Damen_Icon_02', 'G3_Aufzug_Icon_03'].includes(bo.name))
+            {
                 continue;
+            }
 
-            if (bo.level < this.ui.selectedLevel) {
+            if (bo.level < this.ui.selectedLevel)
+            {
                 bo.visible = false;
-            } else {
+            }
+            else
+            {
                 bo.visible = true;
             }
         }
 
-        if (this.camera.type === 'PerspectiveCamera') {
-            for (const staircaseArrow of this.staircaseObjects) {
+        if (this.camera.type === 'PerspectiveCamera')
+        {
+            for (const staircaseArrow of this.staircaseObjects)
+            {
                 staircaseArrow.visible = false;
             }
-        } else {
-            for (const staircaseArrow of this.staircaseObjects) {
+        }
+        else
+        {
+            for (const staircaseArrow of this.staircaseObjects)
+            {
                 staircaseArrow.visible = true;
             }
         }
 
-        for (let i = 0; i < this.ui.selectedLevel - 1; i++) {
-            this.level[i].traverse((e) => {
+        for (let i = 0; i < this.ui.selectedLevel - 1; i++)
+        {
+            this.level[i].traverse((e) =>
+            {
                 if (e.material && !e.nonGreyMaterial
-                    && (e.material.name === 'Base_Material' || e.material.name === 'POI_Material')) {
+                    && (e.material.name === 'Base_Material' || e.material.name === 'POI_Material'))
+                {
                     e.nonGreyMaterial = e.material;
                     e.material = this.greyMaterial;
                 }
@@ -520,9 +630,12 @@ class Papierfabrik {
             });
         }
 
-        for (let i = this.ui.selectedLevel - 1; i < this.level.length; i++) {
-            this.level[i].traverse((e) => {
-                if (e.material && e.nonGreyMaterial) {
+        for (let i = this.ui.selectedLevel - 1; i < this.level.length; i++)
+        {
+            this.level[i].traverse((e) =>
+            {
+                if (e.material && e.nonGreyMaterial)
+                {
                     e.material = e.nonGreyMaterial;
                     e.nonGreyMaterial = undefined;
                 }
@@ -531,40 +644,52 @@ class Papierfabrik {
         }
     }
 
-    update() {
+    update()
+    {
         this.controls.update();
 
         const delta = Math.min(this.clock.getDelta(), 0.1);
 
         this.pulseBallPostion = (this.pulseBallPostion + delta) % 1;
 
-        if (this.navigationLines) {
-            for (const line of this.navigationLines) {
-                for (let i = 0; i < line.pulseBalls.length; i++) {
+        if (this.navigationLines)
+        {
+            for (const line of this.navigationLines)
+            {
+                for (let i = 0; i < line.pulseBalls.length; i++)
+                {
                     line.pulseBalls[i].position.copy(
                         line.curve.getPoint(1 - ((this?.navigationLines?.isInverted ? 1 - this.pulseBallPostion : this.pulseBallPostion) + i) / line.pulseBalls.length % 1));
                 }
             }
         }
 
-        if (this.camera.type === 'PerspectiveCamera') {
-            for (const bo of this.billboardObjects) {
+        if (this.camera.type === 'PerspectiveCamera')
+        {
+            for (const bo of this.billboardObjects)
+            {
                 bo.rotation.set(Math.PI / 2, 0, -this.camera.rotation.z);
             }
 
-            for (let i = 0; i < this.ui.selectedLevel; i++) {
+            for (let i = 0; i < this.ui.selectedLevel; i++)
+            {
                 this.level[i].position.lerp(new THREE.Vector3(0, 0, 0), delta * 6);
             }
 
-            for (let i = this.ui.selectedLevel; i < this.level.length; i++) {
+            for (let i = this.ui.selectedLevel; i < this.level.length; i++)
+            {
                 this.level[i].position.lerp(new THREE.Vector3(0, 300, 0), delta * 0.6);
             }
-        } else {
-            for (let i = 0; i < this.ui.selectedLevel; i++) {
+        }
+        else
+        {
+            for (let i = 0; i < this.ui.selectedLevel; i++)
+            {
                 this.level[i].position.lerp(new THREE.Vector3(0, 0, 0), delta * 6);
             }
 
-            for (let i = this.ui.selectedLevel; i < this.level.length; i++) {
+            for (let i = this.ui.selectedLevel; i < this.level.length; i++)
+            {
                 this.level[i].position.lerp(new THREE.Vector3(0, 0, -300), delta * 0.6);
             }
         }
