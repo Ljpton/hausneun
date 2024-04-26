@@ -160,7 +160,7 @@ class UIElements
         {
             if (!this.slideAlreadyChanged)
             {
-                this.swipeSlides(event.touches[0].clientX);
+                this.swipeSlides(event.changedTouches[0].clientX);
             }
         }
 
